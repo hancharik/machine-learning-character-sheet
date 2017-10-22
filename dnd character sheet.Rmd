@@ -1,0 +1,69 @@
+---
+title: "character sheet"
+author: "Mark Hancharik"
+date: "10/6/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, cache=TRUE}
+
+reccomender_system_simple = function(x){
+  if(x[1]> 13){
+    print("you would make a good fighter")
+  }else{
+    print("not much of a fighter")
+  }
+}
+reccomender_system_switch = function(x){
+  switch(which.max(x),
+   print("a fighter you could be"), 
+   print("a wizard you could be"), 
+   print("a monk you could be"), 
+   print("a thief you could be"), 
+   print("a ranger you could be"), 
+   print("an illusionist you could be"))
+  
+}
+```
+
+
+
+
+```{r, echo=FALSE}
+for(j in 1:1){
+
+attributes <- c("strength", "dexterity", "speed", "intelligence", "charisma", "constitution")
+
+values <- vector(mode = "integer", length = length(attributes))
+
+#sheet <- matrix(NaN, length(attributes)*2, length(attributes), byrow=TRUE)
+
+for(i in 1:length(attributes)){
+  this_atr <- c(sample(1:6, 3, replace=TRUE)) # 3d6
+    values[i] <- sum(this_atr)
+}
+
+#attributes
+#values
+sheet <- cbind(attributes, values)
+sheet
+
+#plot(sheet[,2], ylim=c(0,18), main='player attributes', col=values, legend = rownames(attributes), xlab = "attribute names")
+#barplot(values, ylim=c(0,18),  main='player attributes', axisnames = TRUE,  names.arg=attributes, cex.names=0.8)
+print(j)
+reccomender_system_simple(values)
+reccomender_system_switch(values)
+
+
+}
+sheet
+```
+
+
+and then we need a vector - matrix? for items/weapons
+
+and access or combine the two so that we get a statement like "a (broadsword = +3 strength) will do (x) damage"
