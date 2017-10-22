@@ -27,7 +27,7 @@ create_character = function(t){
     p[i] <- sum(test_values)
   }
  p[7] <- character_types[t]
-  p[t] <- 15 + sample(1:3, 1) 
+  p[t] <- 14 + sample(1:4, 1) 
   
   p
   

@@ -11,22 +11,43 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r, cache=TRUE}
 
+#simple
 reccomender_system_simple = function(x){
   if(x[1]> 13){
-    print("you would make a good fighter")
+    cat("you would make a good fighter\n")
   }else{
-    print("not much of a fighter")
+    cat("not much of a fighter\n")
   }
 }
+
+
+# more complex
 reccomender_system_switch = function(x){
   switch(which.max(x),
-   print("a fighter you could be"), 
-   print("a wizard you could be"), 
-   print("a monk you could be"), 
-   print("a thief you could be"), 
-   print("a ranger you could be"), 
-   print("an illusionist you could be"))
+   cat("a fighter you could be\n"), 
+   cat("a wizard you could be\n"), 
+   cat("a monk you could be\n"), 
+   cat("a thief you could be\n"), 
+   cat("a ranger you could be\n"), 
+   cat("an illusionist you could be\n"))
   
+}
+
+# unsupervised machine learning 
+reccomender_system_engine = function(x){
+
+# load a 'dummy' data frame that we know works   
+dataset <- read.csv("one.csv", header=FALSE)
+colnames(dataset) <-  c("strength", "dexterity", "speed" ,"intelligence","charisma","constitution","Class")
+ 
+  
+  for(i in 1:6){
+  dataset[i] = x[i]
+  }
+  
+character_model <- readRDS("./character_class_model_lda.rds")
+final_predictions <- predict(character_model, dataset) 
+cat("the machine thinks you should be a",as.character(final_predictions[1]),"\n")  
 }
 ```
 
@@ -34,6 +55,15 @@ reccomender_system_switch = function(x){
 
 
 ```{r, echo=FALSE}
+
+library(caret)
+library(mlbench)
+library(randomForest)
+library(doMC)
+registerDoMC(cores=2) 
+
+
+
 for(j in 1:1){
 
 attributes <- c("strength", "dexterity", "speed", "intelligence", "charisma", "constitution")
@@ -53,11 +83,13 @@ sheet <- cbind(attributes, values)
 sheet
 
 #plot(sheet[,2], ylim=c(0,18), main='player attributes', col=values, legend = rownames(attributes), xlab = "attribute names")
-#barplot(values, ylim=c(0,18),  main='player attributes', axisnames = TRUE,  names.arg=attributes, cex.names=0.8)
-print(j)
+barplot(values, ylim=c(0,18),  main='player attributes', axisnames = TRUE,  names.arg=attributes, cex.names=0.8)
+if(j>1){
+  print(j)
+}
 reccomender_system_simple(values)
 reccomender_system_switch(values)
-
+reccomender_system_engine(values)
 
 }
 sheet

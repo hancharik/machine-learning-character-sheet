@@ -8,7 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
+## https://machinelearningmastery.com/machine-learning-in-r-step-by-step/
 ```{r}
 
 library(caret)
@@ -92,6 +92,10 @@ fit.svm <- train(Class~., data=dataset, method="svmRadial", metric=metric, trCon
 # Random Forest
 set.seed(7)
 fit.rf <- train(Class~., data=dataset, method="rf", metric=metric, trControl=control)
+
+# attempt to save model
+saveRDS(fit.rf, "./character_class_model_rf.rds")
+saveRDS(fit.lda, "./character_class_model_lda.rds")
 
 # summarize accuracy of models
 results <- resamples(list(lda=fit.lda, cart=fit.cart, knn=fit.knn, svm=fit.svm, rf=fit.rf))

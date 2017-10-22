@@ -1,0 +1,58 @@
+---
+title: "use the model"
+author: "Mark Hancharik"
+date: "10/22/2017"
+output: html_document
+---
+## https://machinelearningmastery.com/finalize-machine-learning-models-in-r/
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+# load libraries
+library(caret)
+library(mlbench)
+library(randomForest)
+library(doMC)
+registerDoMC(cores=2)
+# define the filename
+filename <- 
+# load the CSV file from the local directory
+dataset <- read.csv("one.csv", header=FALSE)
+colnames(dataset) <-  c("strength", "dexterity", "speed" ,"intelligence","charisma","constitution","Class")
+is.data.frame(dataset)
+
+set.seed(7)
+# create 80%/20% for training and validation datasets
+#validation_index <- createDataPartition(dataset$Class, p=0.98, list=FALSE)
+#validation <- dataset[-validation_index,]
+
+#is.data.frame(validation)
+#is.vector(validation)
+
+
+# later...
+
+
+
+# load the model
+super_model <- readRDS("./character_class_model_lda.rds")
+print(super_model)
+# make a predictions on "new data" using the final model
+final_predictions <- predict(super_model, dataset)
+#confusionMatrix(final_predictions, dataset$Class)
+
+
+dataset[1,]
+dataset[1,2]
+dataset[1,3]
+dataset[1,4]
+as.character(final_predictions[1])
+
+
+
+
+
+```
