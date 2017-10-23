@@ -9,7 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r, cache=TRUE}
+```{r}  
+#, cache=TRUE}
+
 
 #simple
 reccomender_system_simple = function(x){
@@ -19,6 +21,7 @@ reccomender_system_simple = function(x){
     cat("not much of a fighter\n")
   }
 }
+
 
 
 # more complex
@@ -33,6 +36,8 @@ reccomender_system_switch = function(x){
   
 }
 
+
+
 # unsupervised machine learning 
 reccomender_system_engine = function(x){
 
@@ -46,15 +51,16 @@ colnames(dataset) <-  c("strength", "dexterity", "speed" ,"intelligence","charis
   }
   
 character_model <- readRDS("./character_class_model_lda.rds")
-final_predictions <- predict(character_model, dataset) 
-cat("the machine thinks you should be a",as.character(final_predictions[1]),"\n")  
+character_prediction <- predict(character_model, dataset) 
+cat("the machine thinks you should be a", as.character(character_prediction),"\n")  #as.character(final_predictions[1]),"\n")  
 }
+
 ```
 
 
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 
 library(caret)
 library(mlbench)
@@ -92,10 +98,11 @@ reccomender_system_switch(values)
 reccomender_system_engine(values)
 
 }
-sheet
+
+
+
+#sheet
+#next we need a vector - matrix? for items/weapons
+#and combine the two so that we get a statement like "a (broadsword = +3 strength) will do (x) damage"
 ```
 
-
-and then we need a vector - matrix? for items/weapons
-
-and access or combine the two so that we get a statement like "a (broadsword = +3 strength) will do (x) damage"
