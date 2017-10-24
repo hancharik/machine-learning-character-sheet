@@ -18,10 +18,10 @@ filename <- "characters.csv"
 # load the CSV file from the local directory
 dataset <- read.csv(filename, header=FALSE)
 # set the column names in the dataset
-colnames(dataset) <-  c("strength", "dexterity", "speed" ,"intelligence","charisma","constitution","Class")
+colnames(dataset) <-  c("strength","intelligence","wisdom","dexterity", "constitution","charisma","Class")
 
 # create a list of 80% of the rows in the original dataset we can use for training
-validation_index <- createDataPartition(dataset$Class, p=0.50, list=FALSE)
+validation_index <- createDataPartition(dataset$Class, p=0.80, list=FALSE)
 # select 20% of the data for validation
 validation <- dataset[-validation_index,]
 # use the remaining 80% of data to training and testing the models
@@ -51,10 +51,10 @@ x <- dataset[,1:6]
 y <- dataset[,7]
 
 # boxplot for each attribute on one image
-par(mfrow=c(1,6))
-  for(i in 1:6) {
-  boxplot(x[,i], main=names(dataset)[i])
-  }
+#par(mfrow=c(1,6))
+#  for(i in 1:6) {
+ # boxplot(x[,i], main=names(dataset)[i])
+#  }
 
 
 # barplot for class breakdown
@@ -62,14 +62,14 @@ par(mfrow=c(1,6))
 
 
 # scatterplot matrix
-featurePlot(x, y, plot="ellipse")
+#featurePlot(x, y, plot="ellipse")
 # box and whisker plots for each attribute
-featurePlot(x=x, y=y, plot="box")
+#featurePlot(x=x, y=y, plot="box")
 
 
 # density plots for each attribute by class value
-scales <- list(x=list(relation="free"), y=list(relation="free"))
-featurePlot(x=x, y=y, plot="density", scales=scales)
+#scales <- list(x=list(relation="free"), y=list(relation="free"))
+#featurePlot(x=x, y=y, plot="density", scales=scales)
 
 # Run algorithms using 10-fold cross validation
 control <- trainControl(method="cv", number=10)

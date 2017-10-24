@@ -10,13 +10,138 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+#[1]"strength", [2]"intelligence", [3]"wisdom" [4]"dexterity",[5]"constitution" ,[6]"charisma"
 
-u <- 10002
+create_cleric = function(x){
+  x[3] <- 8 + sample(1:10, 1) # min wis 9 
+  #optional 
+ # x[5] <- 7 + sample(1:11, 1) # min constitution 7 
+ # x[4] <- 7 + sample(1:11, 1) # min dex 8 
+ # x[1] <- 7 + sample(1:11, 1) # min str 8 
+  x
+}
+create_druid = function(x){
+  x[3] <- 11 + sample(1:7, 1) # min wis 12 
+  x[6] <- 14 + sample(1:4, 1) # min wis 15 
+  #optional 
+#  x[5] <- 7 + sample(1:11, 1) # min constitution 7 
+ # x[4] <- 7 + sample(1:11, 1) # min dex 8 
+ # x[1] <- 7 + sample(1:11, 1) # min str 8 
+  x
+}
+create_fighter = function(x){
+  x[1] <- 8 + sample(1:10, 1) # min str 9
+  x[5] <- 6 + sample(1:12, 1) # min con 7 
+  #optional 
+  
+ # x[4] <- 7 + sample(1:11, 1) # min dex 8 
+  
+  x
+}
+create_paladin = function(x){
+  x[1] <- 11 + sample(1:7, 1) # min str 12
+  x[2] <- 8 + sample(1:10, 1) # min int 9 
+  x[3] <- 12 + sample(1:6, 1) # min wis 13
+  x[5] <- 8 + sample(1:10, 1) # min con 9
+  x[6] <- 16 + sample(1:2, 1) # min chr 17 
+  #optional 
+  
+ # x[4] <- 7 + sample(1:11, 1) # min dex 8 
+  
+  x
+}
 
+create_ranger = function(x){
+  x[1] <- 12 + sample(1:6, 1) # min str 13
+  x[2] <- 8 + sample(1:10, 1) # min int 13 
+  x[3] <- 13 + sample(1:5, 1) # min wis 14
+  x[5] <- 13 + sample(1:5, 1) # min con 14
+
+  #optional 
+  
+ # x[4] <- 7 + sample(1:11, 1) # min dex 8 
+  
+  x
+}
+create_magic_user = function(x){
+  x[2] <- 8 + sample(1:10, 1) # min int 9
+  x[4] <- 5 + sample(1:13, 1) # min dex 6
+ 
+  x
+}
+create_illusionist = function(x){
+  x[2] <- 14 + sample(1:4, 1) # min int 15
+  x[4] <- 15 + sample(1:3, 1) # min dex 16
+ 
+  x
+}
+create_thief = function(x){
+  
+  x[4] <- 8 + sample(1:10, 1) # min dex 9
+ # optional
+  # x[2] <- 8 + sample(1:10, 1) # min int 9
+  x
+}
+create_assassin = function(x){
+  
+  x[1] <- 11 + sample(1:7, 1) # min str 12
+  x[2] <- 10 + sample(1:8, 1) # min int 11 
+  x[4] <- 11 + sample(1:7, 1) # min dex 12
+  x
+}
+create_monk = function(x){
+  
+  x[1] <- 14 + sample(1:4, 1) # min str 15
+  x[3] <- 14 + sample(1:4, 1) # min wis 15 
+  x[4] <- 14 + sample(1:4, 1) # min dex 15
+  x[5] <- 10 + sample(1:4, 1) # min con 11
+  x
+}
+
+
+create_class_stats = function(x,t){
+  
+#print(t)
+ 
+  switch(t, 
+        x <- create_cleric(x),
+        x <- create_druid(x),
+        x <- create_fighter(x),
+        x <- create_paladin(x),
+        x <- create_ranger(x),
+        x <- create_magic_user(x),
+        x <- create_illusionist(x),
+        x <- create_thief(x),
+        x <- create_assassin(x),
+        x <- create_monk(x)
+         )
+      
+    x[7] <- character_types[t]
+  
+  x
+  
+}
+
+
+```
+
+
+
+
+
+hlksdjhfa
+
+
+
+```{r}
+
+#u <- 6
+character_types <- c("cleric","druid","fighter","paladin","ranger","magic_user","illusionist","thief","assassin","monk")
+ 
+u <- length(character_types)*10^2  
 characters <- matrix(NaN, u, 7)
-#colnames(characters) <- c("strength", "dexterity", "speed" ,"intelligence","charisma","constitution","class")
-character_types <- c("fighter","thief","ranger","mage","priest","monk")#vector(mode = "character", length = u)
-                  
+#colnames(characters) <- c("strength","intelligence","wisdom", "dexterity", "constitution","charisma","class")
+               
 
 create_character = function(t){
   
@@ -26,9 +151,10 @@ create_character = function(t){
     test_values <- c(sample(1:6, 3, replace=TRUE))
     p[i] <- sum(test_values)
   }
- p[7] <- character_types[t]
-  p[t] <- 14 + sample(1:4, 1) 
   
+
+ 
+  p <- create_class_stats(p, t)
   p
   
 }
@@ -36,7 +162,7 @@ create_character = function(t){
 # generate a set of characters
 for(i in 1:u){
   #print(i)
-  digit <- (i %% 6) + 1
+  digit <- (i %% length(character_types)) + 1
 #print(digit)
 characters[i,] <- create_character(digit)
 
@@ -45,10 +171,12 @@ characters[i,] <- create_character(digit)
 #characters
 
 
-  write.csv(characters, file ="characters.csv",row.names=FALSE)
-  write.table(characters, file ="characters.text",row.names=FALSE)
+  write.csv(characters, file ="characters.csv",row.names=FALSE, col.names = FALSE)
+  write.table(characters, file ="characters.txt",row.names=FALSE)
 
+  
 
+  
 ```
 
 ## old way
@@ -72,3 +200,19 @@ characters[i,] <- create_character(digit)
       characters[i,] <- make_fighter()
   character_types[i] = "priest"
   }
+  
+  
+  
+  
+  
+  
+    head(iris)
+  text_string <- '"1.8","1.1","1.9","0.3","mimosa"'
+  cat(text_string)
+  text_string <- gsub('"','', text_string)
+  cat(text_string)
+  text_string <- read.table("characters.csv", header=F)
+   text_string
+ text_string <- gsub('"','', text_string)
+  text_string
+   write.table(text_string, file ="fixed_characters.csv",row.names=FALSE)

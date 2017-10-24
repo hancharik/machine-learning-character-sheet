@@ -43,7 +43,7 @@ reccomender_system_engine = function(x){
 
 # load a 'dummy' data frame that we know works   
 dataset <- read.csv("one.csv", header=FALSE)
-colnames(dataset) <-  c("strength", "dexterity", "speed" ,"intelligence","charisma","constitution","Class")
+colnames(dataset) <-  c("strength","intelligence","wisdom", "dexterity", "constitution","charisma","class")
  
   
   for(i in 1:6){
@@ -70,9 +70,9 @@ registerDoMC(cores=2)
 
 
 
-for(j in 1:1){
+for(j in 1:1000){
 
-attributes <- c("strength", "dexterity", "speed", "intelligence", "charisma", "constitution")
+attributes <- c("strength","intelligence","wisdom", "dexterity", "constitution","charisma")
 
 values <- vector(mode = "integer", length = length(attributes))
 
@@ -89,14 +89,14 @@ sheet <- cbind(attributes, values)
 sheet
 
 #plot(sheet[,2], ylim=c(0,18), main='player attributes', col=values, legend = rownames(attributes), xlab = "attribute names")
-barplot(values, ylim=c(0,18),  main='player attributes', axisnames = TRUE,  names.arg=attributes, cex.names=0.8)
+#barplot(values, ylim=c(0,18),  main='player attributes', axisnames = TRUE,  names.arg=attributes, cex.names=0.8)
 if(j>1){
   print(j)
 }
-reccomender_system_simple(values)
-reccomender_system_switch(values)
+#reccomender_system_simple(values)
+#reccomender_system_switch(values)
 reccomender_system_engine(values)
-
+print(sheet)
 }
 
 

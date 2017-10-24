@@ -124,12 +124,125 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>u &lt;- 10002
+<pre class="r"><code>#[1]&quot;strength&quot;, [2]&quot;intelligence&quot;, [3]&quot;wisdom&quot; [4]&quot;dexterity&quot;,[5]&quot;constitution&quot; ,[6]&quot;charisma&quot;
 
+create_cleric = function(x){
+  x[3] &lt;- 8 + sample(1:10, 1) # min wis 9 
+  #optional 
+ # x[5] &lt;- 7 + sample(1:11, 1) # min constitution 7 
+ # x[4] &lt;- 7 + sample(1:11, 1) # min dex 8 
+ # x[1] &lt;- 7 + sample(1:11, 1) # min str 8 
+  x
+}
+create_druid = function(x){
+  x[3] &lt;- 11 + sample(1:7, 1) # min wis 12 
+  x[6] &lt;- 14 + sample(1:4, 1) # min wis 15 
+  #optional 
+#  x[5] &lt;- 7 + sample(1:11, 1) # min constitution 7 
+ # x[4] &lt;- 7 + sample(1:11, 1) # min dex 8 
+ # x[1] &lt;- 7 + sample(1:11, 1) # min str 8 
+  x
+}
+create_fighter = function(x){
+  x[1] &lt;- 8 + sample(1:10, 1) # min str 9
+  x[5] &lt;- 6 + sample(1:12, 1) # min con 7 
+  #optional 
+  
+ # x[4] &lt;- 7 + sample(1:11, 1) # min dex 8 
+  
+  x
+}
+create_paladin = function(x){
+  x[1] &lt;- 11 + sample(1:7, 1) # min str 12
+  x[2] &lt;- 8 + sample(1:10, 1) # min int 9 
+  x[3] &lt;- 12 + sample(1:6, 1) # min wis 13
+  x[5] &lt;- 8 + sample(1:10, 1) # min con 9
+  x[6] &lt;- 16 + sample(1:2, 1) # min chr 17 
+  #optional 
+  
+ # x[4] &lt;- 7 + sample(1:11, 1) # min dex 8 
+  
+  x
+}
+
+create_ranger = function(x){
+  x[1] &lt;- 12 + sample(1:6, 1) # min str 13
+  x[2] &lt;- 8 + sample(1:10, 1) # min int 13 
+  x[3] &lt;- 13 + sample(1:5, 1) # min wis 14
+  x[5] &lt;- 13 + sample(1:5, 1) # min con 14
+
+  #optional 
+  
+ # x[4] &lt;- 7 + sample(1:11, 1) # min dex 8 
+  
+  x
+}
+create_magic_user = function(x){
+  x[2] &lt;- 8 + sample(1:10, 1) # min int 9
+  x[4] &lt;- 5 + sample(1:13, 1) # min dex 6
+ 
+  x
+}
+create_illusionist = function(x){
+  x[2] &lt;- 14 + sample(1:4, 1) # min int 15
+  x[4] &lt;- 15 + sample(1:3, 1) # min dex 16
+ 
+  x
+}
+create_thief = function(x){
+  
+  x[4] &lt;- 8 + sample(1:10, 1) # min dex 9
+ # optional
+  # x[2] &lt;- 8 + sample(1:10, 1) # min int 9
+  x
+}
+create_assassin = function(x){
+  
+  x[1] &lt;- 11 + sample(1:7, 1) # min str 12
+  x[2] &lt;- 10 + sample(1:8, 1) # min int 11 
+  x[4] &lt;- 11 + sample(1:7, 1) # min dex 12
+  x
+}
+create_monk = function(x){
+  
+  x[1] &lt;- 14 + sample(1:4, 1) # min str 15
+  x[3] &lt;- 14 + sample(1:4, 1) # min wis 15 
+  x[4] &lt;- 14 + sample(1:4, 1) # min dex 15
+  x[5] &lt;- 10 + sample(1:4, 1) # min con 11
+  x
+}
+
+
+create_class_stats = function(x,t){
+  
+#print(t)
+ 
+  switch(t, 
+        x &lt;- create_cleric(x),
+        x &lt;- create_druid(x),
+        x &lt;- create_fighter(x),
+        x &lt;- create_paladin(x),
+        x &lt;- create_ranger(x),
+        x &lt;- create_magic_user(x),
+        x &lt;- create_illusionist(x),
+        x &lt;- create_thief(x),
+        x &lt;- create_assassin(x),
+        x &lt;- create_monk(x)
+         )
+      
+    x[7] &lt;- character_types[t]
+  
+  x
+  
+}</code></pre>
+<p>hlksdjhfa</p>
+<pre class="r"><code>#u &lt;- 6
+character_types &lt;- c(&quot;cleric&quot;,&quot;druid&quot;,&quot;fighter&quot;,&quot;paladin&quot;,&quot;ranger&quot;,&quot;magic_user&quot;,&quot;illusionist&quot;,&quot;thief&quot;,&quot;assassin&quot;,&quot;monk&quot;)
+ 
+u &lt;- length(character_types)*10^2  
 characters &lt;- matrix(NaN, u, 7)
-#colnames(characters) &lt;- c(&quot;strength&quot;, &quot;dexterity&quot;, &quot;speed&quot; ,&quot;intelligence&quot;,&quot;charisma&quot;,&quot;constitution&quot;,&quot;class&quot;)
-character_types &lt;- c(&quot;fighter&quot;,&quot;thief&quot;,&quot;ranger&quot;,&quot;mage&quot;,&quot;priest&quot;,&quot;monk&quot;)#vector(mode = &quot;character&quot;, length = u)
-                  
+#colnames(characters) &lt;- c(&quot;strength&quot;,&quot;intelligence&quot;,&quot;wisdom&quot;, &quot;dexterity&quot;, &quot;constitution&quot;,&quot;charisma&quot;,&quot;class&quot;)
+               
 
 create_character = function(t){
   
@@ -139,9 +252,10 @@ create_character = function(t){
     test_values &lt;- c(sample(1:6, 3, replace=TRUE))
     p[i] &lt;- sum(test_values)
   }
- p[7] &lt;- character_types[t]
-  p[t] &lt;- 14 + sample(1:4, 1) 
   
+
+ 
+  p &lt;- create_class_stats(p, t)
   p
   
 }
@@ -149,7 +263,7 @@ create_character = function(t){
 # generate a set of characters
 for(i in 1:u){
   #print(i)
-  digit &lt;- (i %% 6) + 1
+  digit &lt;- (i %% length(character_types)) + 1
 #print(digit)
 characters[i,] &lt;- create_character(digit)
 
@@ -158,11 +272,15 @@ characters[i,] &lt;- create_character(digit)
 #characters
 
 
-  write.csv(characters, file =&quot;characters.csv&quot;,row.names=FALSE)
-  write.table(characters, file =&quot;characters.text&quot;,row.names=FALSE)</code></pre>
+  write.csv(characters, file =&quot;characters.csv&quot;,row.names=FALSE, col.names = FALSE)</code></pre>
+<pre><code>## Warning in write.csv(characters, file = &quot;characters.csv&quot;, row.names =
+## FALSE, : attempt to set 'col.names' ignored</code></pre>
+<pre class="r"><code>  write.table(characters, file =&quot;characters.txt&quot;,row.names=FALSE)</code></pre>
 <div id="old-way" class="section level2">
 <h2>old way</h2>
 <p>if(i %% 6 == 1){ characters[i,] &lt;- make_fighter() character_types[i] = “fighter” }else if(i %% 6 == 2){ characters[i,] &lt;- make_fighter() character_types[i] = “wizard” }else if(i %% 6 == 3){ characters[i,] &lt;- make_fighter() character_types[i] = “theif” }else if(i %% 6 == 4){ characters[i,] &lt;- make_fighter() character_types[i] = “monk” }else if(i %% 6 == 5){ characters[i,] &lt;- make_fighter() character_types[i] = “illusionist” }else{ characters[i,] &lt;- make_fighter() character_types[i] = “priest” }</p>
+<pre><code>head(iris)</code></pre>
+<p>text_string &lt;- ‘“1.8”,“1.1”,“1.9”,“0.3”,“mimosa”’ cat(text_string) text_string &lt;- gsub(‘“’,’’, text_string) cat(text_string) text_string &lt;- read.table(”characters.csv“, header=F) text_string text_string &lt;- gsub(’”’,’’, text_string) text_string write.table(text_string, file =“fixed_characters.csv”,row.names=FALSE)</p>
 </div>
 
 
