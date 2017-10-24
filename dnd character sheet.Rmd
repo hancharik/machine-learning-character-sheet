@@ -9,8 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}  
-#, cache=TRUE}
+```{r, echo=FALSE}  
+
+
+
+
 
 
 #simple
@@ -28,11 +31,11 @@ reccomender_system_simple = function(x){
 reccomender_system_switch = function(x){
   switch(which.max(x),
    cat("a fighter you could be\n"), 
-   cat("a wizard you could be\n"), 
-   cat("a monk you could be\n"), 
+   cat("a magic_user you could be\n"), 
+   cat("a cleric you could be\n"), 
    cat("a thief you could be\n"), 
-   cat("a ranger you could be\n"), 
-   cat("an illusionist you could be\n"))
+   cat("a strong constitution you have\n"), 
+   cat("a high charisma you have\n"))
   
 }
 
@@ -52,8 +55,14 @@ colnames(dataset) <-  c("strength","intelligence","wisdom", "dexterity", "consti
   
 character_model <- readRDS("./character_class_model_lda.rds")
 character_prediction <- predict(character_model, dataset) 
-cat("the machine thinks you should be a", as.character(character_prediction),"\n")  #as.character(final_predictions[1]),"\n")  
+
+cat("the machine thinks you should be a", as.character(character_prediction),"\n")  #as.character(final_predictions[1]),"\n") 
+
 }
+
+
+
+
 
 ```
 
@@ -70,39 +79,30 @@ registerDoMC(cores=2)
 
 
 
-for(j in 1:1000){
-
 attributes <- c("strength","intelligence","wisdom", "dexterity", "constitution","charisma")
 
 values <- vector(mode = "integer", length = length(attributes))
 
-#sheet <- matrix(NaN, length(attributes)*2, length(attributes), byrow=TRUE)
 
 for(i in 1:length(attributes)){
   this_atr <- c(sample(1:6, 3, replace=TRUE)) # 3d6
-    values[i] <- sum(this_atr)
+    values[i] <- sum(this_atr) # all 18's = "paladin", all 3's = "thief"
 }
 
-#attributes
-#values
 sheet <- cbind(attributes, values)
-sheet
+
 
 #plot(sheet[,2], ylim=c(0,18), main='player attributes', col=values, legend = rownames(attributes), xlab = "attribute names")
-#barplot(values, ylim=c(0,18),  main='player attributes', axisnames = TRUE,  names.arg=attributes, cex.names=0.8)
-if(j>1){
-  print(j)
-}
-#reccomender_system_simple(values)
-#reccomender_system_switch(values)
+barplot(values, ylim=c(0,18),  main='player attributes', axisnames = TRUE,  names.arg=attributes, cex.names=0.8)
+
+reccomender_system_simple(values)
+reccomender_system_switch(values)
 reccomender_system_engine(values)
 print(sheet)
-}
 
 
 
-#sheet
-#next we need a vector - matrix? for items/weapons
-#and combine the two so that we get a statement like "a (broadsword = +3 strength) will do (x) damage"
+
+
 ```
 

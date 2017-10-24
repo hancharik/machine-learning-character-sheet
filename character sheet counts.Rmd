@@ -1,0 +1,93 @@
+---
+title: "character sheet"
+author: "Mark Hancharik"
+date: "10/6/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE}  
+
+
+
+# unsupervised machine learning 
+reccomender_system_engine = function(x){
+
+# load a 'dummy' data frame that we know works   
+dataset <- read.csv("one.csv", header=FALSE)
+colnames(dataset) <-  c("strength","intelligence","wisdom", "dexterity", "constitution","charisma","class")
+ 
+  
+  for(i in 1:6){
+  dataset[i] = x[i]
+  }
+  
+character_model <- readRDS("./character_class_model_lda.rds")
+character_prediction <- predict(character_model, dataset) 
+
+ return(as.character(character_prediction))
+}
+
+
+
+
+
+```
+
+
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+uu <- 10^4
+library(caret)
+library(mlbench)
+library(randomForest)
+library(doMC)
+registerDoMC(cores=2) 
+character_types <- c("cleric","druid","fighter","paladin","ranger","magic_user","illusionist","thief","assassin","monk")
+class_counts <- vector(mode = "integer", length = length(character_types))
+fighters = matrix(NaN,1000,7)
+counter <- 1
+for(j in 1:uu){
+
+attributes <- c("strength","intelligence","wisdom", "dexterity", "constitution","charisma")
+
+values <- vector(mode = "integer", length = length(attributes))
+
+
+
+for(i in 1:length(attributes)){
+  this_atr <- c(sample(1:6, 3, replace=TRUE)) # 3d6
+    values[i] <- sum(this_atr)
+}
+
+
+
+for(g in 1:length(character_types)){
+if(reccomender_system_engine(values)==character_types[g]){
+  class_counts[g] = class_counts[g] + 1
+}
+}
+
+
+}
+
+cat("for",uu,"characters generated:\n")
+for(q in 1:length(character_types)){
+cat(character_types[q],"=",class_counts[q]/(uu/100),"%\n")
+}
+
+
+#check for parity
+if(sum(class_counts)==uu){
+  print("parity in the counts")
+}else{
+  print("oh no! the counts are off") 
+}
+
+
+```
+
