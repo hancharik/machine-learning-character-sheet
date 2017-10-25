@@ -10,8 +10,20 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r, echo=FALSE}  
-
-
+# I just needed this for illusionist and assasin, it was making me crazy
+a_or_an = function(x){
+  vowels <- c("a","e","i","o","u")
+  pre_a <- "a"
+  first_letter = substring(x, 1, 1)
+  for(i in 1:length(vowels)){
+    if(first_letter == vowels[i]){
+      pre_a = "an"
+    }
+  }
+  
+  paste(pre_a,x)
+  
+}
 
 
 
@@ -56,7 +68,7 @@ colnames(dataset) <-  c("strength","intelligence","wisdom", "dexterity", "consti
 character_model <- readRDS("./character_class_model_lda.rds")
 character_prediction <- predict(character_model, dataset) 
 
-cat("the machine thinks you should be a", as.character(character_prediction),"\n")  #as.character(final_predictions[1]),"\n") 
+cat("the machine thinks you should be", a_or_an(as.character(character_prediction)),"\n")  #as.character(final_predictions[1]),"\n") 
 
 }
 
@@ -95,8 +107,8 @@ sheet <- cbind(attributes, values)
 #plot(sheet[,2], ylim=c(0,18), main='player attributes', col=values, legend = rownames(attributes), xlab = "attribute names")
 barplot(values, ylim=c(0,18),  main='player attributes', axisnames = TRUE,  names.arg=attributes, cex.names=0.8)
 
-reccomender_system_simple(values)
-reccomender_system_switch(values)
+#reccomender_system_simple(values)
+#reccomender_system_switch(values)
 reccomender_system_engine(values)
 print(sheet)
 
