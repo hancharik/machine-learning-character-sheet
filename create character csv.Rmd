@@ -169,10 +169,12 @@ characters[i,] <- create_character(digit)
 }
 
 #characters
-
-
-  write.csv(characters, file ="characters.csv",row.names=FALSE, col.names = FALSE)
-  write.table(characters, file ="characters.txt",row.names=FALSE)
+#is.matrix(characters)
+#is.data.frame(characters)
+#write.csv(characters, file ="test.csv",quote = FALSE,row.names=FALSE, col.names = FALSE)
+ write.table(characters, file="characters.csv", sep=',', quote = FALSE, row.names=FALSE, col.names=FALSE) 
+  #write.csv(characters, file ="characters.csv",quote = FALSE,row.names=FALSE, col.names = FALSE)
+ # write.table(characters, file ="characters.txt",quote = FALSE,row.names=FALSE, col.names = FALSE)
 
   
 

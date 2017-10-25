@@ -270,12 +270,12 @@ characters[i,] &lt;- create_character(digit)
 }
 
 #characters
-
-
-  write.csv(characters, file =&quot;characters.csv&quot;,row.names=FALSE, col.names = FALSE)</code></pre>
-<pre><code>## Warning in write.csv(characters, file = &quot;characters.csv&quot;, row.names =
-## FALSE, : attempt to set 'col.names' ignored</code></pre>
-<pre class="r"><code>  write.table(characters, file =&quot;characters.txt&quot;,row.names=FALSE)</code></pre>
+#is.matrix(characters)
+#is.data.frame(characters)
+#write.csv(characters, file =&quot;test.csv&quot;,quote = FALSE,row.names=FALSE, col.names = FALSE)
+ write.table(characters, file=&quot;characters.csv&quot;, sep=',', quote = FALSE, row.names=FALSE, col.names=FALSE) 
+  #write.csv(characters, file =&quot;characters.csv&quot;,quote = FALSE,row.names=FALSE, col.names = FALSE)
+ # write.table(characters, file =&quot;characters.txt&quot;,quote = FALSE,row.names=FALSE, col.names = FALSE)</code></pre>
 <div id="old-way" class="section level2">
 <h2>old way</h2>
 <p>if(i %% 6 == 1){ characters[i,] &lt;- make_fighter() character_types[i] = “fighter” }else if(i %% 6 == 2){ characters[i,] &lt;- make_fighter() character_types[i] = “wizard” }else if(i %% 6 == 3){ characters[i,] &lt;- make_fighter() character_types[i] = “theif” }else if(i %% 6 == 4){ characters[i,] &lt;- make_fighter() character_types[i] = “monk” }else if(i %% 6 == 5){ characters[i,] &lt;- make_fighter() character_types[i] = “illusionist” }else{ characters[i,] &lt;- make_fighter() character_types[i] = “priest” }</p>

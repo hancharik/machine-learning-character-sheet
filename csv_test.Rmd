@@ -1,0 +1,39 @@
+---
+title: "csv test"
+author: "Mark Hancharik"
+date: "10/25/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+## Not run: 
+## To write a CSV file for input to Excel one might use
+x <- data.frame(a = I("a \" quote"), b = pi)
+write.table(x, file = "foo1.csv", sep = ",", col.names = NA,
+            qmethod = "double")
+## and to read this file back into R one needs
+read.table("foo1.csv", header = TRUE, sep = ",", row.names = 1)
+## NB: you do need to specify a separator if qmethod = "double".
+
+### Alternatively
+write.csv(x, file = "foo2.csv")
+read.csv("foo2.csv", row.names = 1)
+## or without row names
+write.csv(x, file = "no_quote.csv",quote = FALSE, row.names = FALSE)
+read.csv("no_quote.csv")
+
+## To write a file in Mac Roman for simple use in Mac Excel 2004/8
+write.csv(x, file = "foo4.csv", fileEncoding = "macroman")
+## or for Windows Excel 2007/10
+write.csv(x, file = "foo5.csv", fileEncoding = "UTF-16LE")
+
+## End(Not run)
+
+
+
+```

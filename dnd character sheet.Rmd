@@ -29,7 +29,7 @@ a_or_an = function(x){
 
 
 #simple
-reccomender_system_simple = function(x){
+recommender_system_simple = function(x){
   if(x[1]> 13){
     cat("you would make a good fighter\n")
   }else{
@@ -40,7 +40,7 @@ reccomender_system_simple = function(x){
 
 
 # more complex
-reccomender_system_switch = function(x){
+recommender_system_switch = function(x){
   switch(which.max(x),
    cat("a fighter you could be\n"), 
    cat("a magic_user you could be\n"), 
@@ -54,7 +54,7 @@ reccomender_system_switch = function(x){
 
 
 # unsupervised machine learning 
-reccomender_system_engine = function(x){
+recommender_system_engine = function(x){
 
 # load a 'dummy' data frame that we know works   
 dataset <- read.csv("one.csv", header=FALSE)
@@ -67,8 +67,7 @@ colnames(dataset) <-  c("strength","intelligence","wisdom", "dexterity", "consti
   
 character_model <- readRDS("./character_class_model_lda.rds")
 character_prediction <- predict(character_model, dataset) 
-
-cat("the machine thinks you should be", a_or_an(as.character(character_prediction)),"\n")  #as.character(final_predictions[1]),"\n") 
+cat("the machine thinks you should be", a_or_an(as.character(character_prediction)),"\n")  
 
 }
 
@@ -89,7 +88,7 @@ library(randomForest)
 library(doMC)
 registerDoMC(cores=2) 
 
-
+#set.seed(42) # set.seed(42) makes an assassin
 
 attributes <- c("strength","intelligence","wisdom", "dexterity", "constitution","charisma")
 
@@ -105,16 +104,13 @@ sheet <- cbind(attributes, values)
 
 
 #plot(sheet[,2], ylim=c(0,18), main='player attributes', col=values, legend = rownames(attributes), xlab = "attribute names")
-barplot(values, ylim=c(0,18),  main='player attributes', axisnames = TRUE,  names.arg=attributes, cex.names=0.8)
+barplot(values, ylim=c(0,18),  main='player attributes', axisnames = TRUE,  names.arg=attributes, cex.names=0.8, col = )
 
-#reccomender_system_simple(values)
-#reccomender_system_switch(values)
-reccomender_system_engine(values)
-print(sheet)
+#recommender_system_simple(values)
+#recommender_system_switch(values)
+recommender_system_engine(values)
 
-
-
-
+sheet
 
 ```
 
