@@ -1,0 +1,135 @@
+---
+title: "party generator"
+author: "Mark Hancharik"
+date: "10/6/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE}  
+# I just needed this for illusionist and assasin, it was making me crazy
+a_or_an = function(x){
+  vowels <- c("a","e","i","o","u")
+  pre_a <- "a"
+  first_letter = substring(x, 1, 1)
+  for(i in 1:length(vowels)){
+    if(first_letter == vowels[i]){
+      pre_a = "an"
+    }
+  }
+  
+  paste(pre_a,x)
+  
+}
+
+
+
+
+#simple
+recommender_system_simple = function(x){
+  if(x[1]> 13){
+    cat("you would make a good fighter\n")
+  }else{
+    cat("not much of a fighter\n")
+  }
+}
+
+
+
+# more complex
+recommender_system_switch = function(x){
+  switch(which.max(x),
+   cat("a fighter you could be\n"), 
+   cat("a magic_user you could be\n"), 
+   cat("a cleric you could be\n"), 
+   cat("a thief you could be\n"), 
+   cat("a strong constitution you have\n"), 
+   cat("a high charisma you have\n"))
+  
+}
+
+
+
+# unsupervised machine learning 
+recommender_system_engine = function(x){
+
+# load a 'dummy' data frame that we know works   
+dataset <- read.csv("one.csv", header=FALSE)
+colnames(dataset) <-  c("strength","intelligence","wisdom", "dexterity", "constitution","charisma","class")
+ 
+  
+  for(i in 1:6){
+  dataset[i] = x[i]
+  }
+  
+character_model <- readRDS("./character_class_model_lda.rds")
+character_prediction <- predict(character_model, dataset) 
+#cat("the machine thinks you should be", a_or_an(as.character(character_prediction)),"\n")  
+as.character(character_prediction)
+}
+
+
+
+
+
+```
+
+
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+
+library(caret)
+library(mlbench)
+library(randomForest)
+library(doMC)
+registerDoMC(cores=2) 
+
+#set.seed(42) # set.seed(42) makes an assassin
+
+attributes <- c("strength","intelligence","wisdom", "dexterity", "constitution","charisma")
+
+values <- vector(mode = "integer", length = length(attributes))
+
+
+for(i in 1:length(attributes)){
+  this_atr <- c(sample(1:6, 3, replace=TRUE)) # 3d6
+    values[i] <- sum(this_atr) # all 18's = "paladin", all 3's = "thief"
+}
+
+sheet <- cbind(attributes, values)
+
+party <- matrix(NA,6,1)
+
+#plot(sheet[,2], ylim=c(0,18), main='player attributes', col=values, legend = rownames(attributes), xlab = "attribute names")
+#barplot(values, ylim=c(0,18),  main='player attributes', axisnames = TRUE,  names.arg=attributes, cex.names=0.8, col = )
+
+#recommender_system_simple(values)
+#recommender_system_switch(values)
+q_vector <- c("cleric","thief","fighter","illusionist","monk","druid")
+for(j in 1:length(q_vector)){
+q <- q_vector[6]
+while(q!=q_vector[1]){
+  for(i in 1:length(attributes)){
+  this_atr <- c(sample(1:6, 3, replace=TRUE)) # 3d6
+    values[i] <- sum(this_atr) # all 18's = "paladin", all 3's = "thief"
+}
+  q <- recommender_system_engine(values)
+  #(mat.app <- cbind(party,values))
+  #print(q)
+}
+  party <- cbind(party,values)
+}
+#party <- na.omit(party)
+q_vector <- c("hippie",q_vector)
+colnames(party) <- q_vector
+#party
+#q <- recommender_system_engine(values)
+#q
+#sheet
+
+good_party <- party[,-1]
+good_party
