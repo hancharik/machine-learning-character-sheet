@@ -1,0 +1,118 @@
+---
+title: "party generator"
+author: "Mark Hancharik"
+date: "11/7/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE}  
+# I just needed this for illusionist and assasin, it was making me crazy
+a_or_an = function(x){
+  vowels <- c("a","e","i","o","u")
+  pre_a <- "a"
+  first_letter = substring(x, 1, 1)
+  for(i in 1:length(vowels)){
+    if(first_letter == vowels[i]){
+      pre_a = "an"
+    }
+  }
+  
+  paste(pre_a,x)
+  
+}
+
+
+
+
+
+
+# unsupervised machine learning 
+recommender_system_engine = function(x){
+
+# load a 'dummy' data frame that we know works   
+dataset <- read.csv("one.csv", header=FALSE)
+colnames(dataset) <-  c("strength","intelligence","wisdom", "dexterity", "constitution","charisma","class")
+ 
+  
+  for(i in 1:6){
+  dataset[i] = x[i]
+  }
+  
+character_model <- readRDS("./character_class_model_lda.rds")
+character_prediction <- predict(character_model, dataset) 
+#cat("the machine thinks you should be", a_or_an(as.character(character_prediction)),"\n")  
+as.character(character_prediction)
+}
+
+
+
+
+
+```
+
+
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+
+library(caret)
+library(mlbench)
+library(randomForest)
+library(doMC)
+registerDoMC(cores=2) 
+
+ #set.seed(1) 
+
+attributes <- c("strength","intelligence","wisdom", "dexterity", "constitution","charisma")
+
+values <- vector(mode = "integer", length = length(attributes))
+
+
+
+party <- matrix(NA,6,1)
+row.names(party) <- attributes
+
+party_size = sample(3:8, 1, replace=TRUE)
+cat("your party has",party_size,"members\n")
+
+
+
+
+
+class_vector <- vector(mode = "character", length =party_size)
+q_vector <- c("cleric","thief","fighter","illusionist","monk","druid","paladin","assassin")
+
+for(z in 1:party_size){
+  q <- "temp"#q_vector[1]
+  #for(z in 1:100){ #       while(q!=q_vector[i]){
+      for(i in 1:length(attributes)){
+      this_atr <- c(sample(1:6, 3, replace=TRUE)) # 3d6
+        values[i] <- sum(this_atr) # all 18's = "paladin", all 3's = "thief"
+      }
+  q <- recommender_system_engine(values)
+  class_vector[z] <- q
+  party <- cbind(party,values)
+}
+
+
+party <- party[,-1]
+colnames(party) <- class_vector
+
+
+
+party
+
+
+
+##################################################
+################# SHOW BAR PLOTS #################
+##################################################
+
+for(i in 1:party_size){
+# barplot(party[,i],xlab = class_vector[i], ylab = "stats")
+}
+

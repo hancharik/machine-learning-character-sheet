@@ -1,0 +1,43 @@
+---
+title: "name generator"
+author: "Mark Hancharik"
+date: "11/8/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#set.seed(42)
+
+
+
+name_maker = function(){
+  
+  first_names = c("Glib","Harn","Foir", "Aang","Glib","Parn","Tryn", "Lang", " ")
+  second_names = c("tarn","fook","wain", "o", "a", "i", "u", "e", " ")
+  third_names = c( "Kek","Stu","Maak", "Dehk","Tyn","Shao","Laun", "Riggs", " ")
+  last_names = c("arson","abu","vair", "gins", "o", "a", "i", "u", "e", " ")
+
+  first = sample(first_names,1)
+  second = sample(second_names,1)
+  third = sample(third_names,1)
+  last = sample(last_names,1)
+  
+  first_name <- paste(first,second)
+  last_name <- paste(third,last)
+  first_name <- gsub(" ", "",first_name)
+  last_name <- gsub(" ", "",last_name)
+  generated_name <- paste(first_name,last_name)
+  
+  generated_name
+
+}
+
+print(name_maker())
+for(i in 1:1000){
+#print(name_maker())
+}
+```

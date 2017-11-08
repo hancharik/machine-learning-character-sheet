@@ -1,7 +1,7 @@
 ---
 title: "party generator"
 author: "Mark Hancharik"
-date: "10/6/2017"
+date: "11/7/2017"
 output: html_document
 ---
 
@@ -103,16 +103,18 @@ for(i in 1:length(attributes)){
 sheet <- cbind(attributes, values)
 
 party <- matrix(NA,6,1)
+row.names(party) <- attributes
 
 #plot(sheet[,2], ylim=c(0,18), main='player attributes', col=values, legend = rownames(attributes), xlab = "attribute names")
 #barplot(values, ylim=c(0,18),  main='player attributes', axisnames = TRUE,  names.arg=attributes, cex.names=0.8, col = )
 
 #recommender_system_simple(values)
 #recommender_system_switch(values)
-q_vector <- c("cleric","thief","fighter","illusionist","monk","druid")
+created_vector <- vector(mode = "character", length =100)
+q_vector <- c("cleric","thief","fighter","illusionist","monk","druid","paladin","assassin")
 for(j in 1:length(q_vector)){
-q <- q_vector[6]
-while(q!=q_vector[1]){
+q <- "temp"#q_vector[1]
+while(q!=q_vector[i]){
   for(i in 1:length(attributes)){
   this_atr <- c(sample(1:6, 3, replace=TRUE)) # 3d6
     values[i] <- sum(this_atr) # all 18's = "paladin", all 3's = "thief"
@@ -132,4 +134,11 @@ colnames(party) <- q_vector
 #sheet
 
 good_party <- party[,-1]
+
 good_party
+
+for(i in 1:6){
+# barplot(good_party[,i],xlab = q_vector[i+1], ylab = "stats")
+ # plot(good_party[,i],xlab = q_vector[i+1], ylab = "stats")
+}
+

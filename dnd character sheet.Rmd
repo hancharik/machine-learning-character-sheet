@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r, echo=FALSE}  
-# I just needed this for illusionist and assasin, it was making me crazy
+# I just needed this for illusionist and assasin
 a_or_an = function(x){
   vowels <- c("a","e","i","o","u")
   pre_a <- "a"
@@ -26,6 +26,34 @@ a_or_an = function(x){
 }
 
 
+##################################################
+############## NAME FUNCTION #####################
+
+
+name_maker = function(){
+  
+  first_names = c("Glib","Harn","Foir", "Aang","Glib","Parn","Tryn", "Lang", " ")
+  second_names = c("tarn","fook","wain", "o", "a", "i", "u", "e", " ")
+  third_names = c( "Kek","Stu","Maak", "Dehk","Tyn","Shao","Laun", "Riggs", " ")
+  last_names = c("arson","abu","vair", "gins", "o", "a", "i", "u", "e", " ")
+
+  first = sample(first_names,1)
+  second = sample(second_names,1)
+  third = sample(third_names,1)
+  last = sample(last_names,1)
+  
+  first_name <- paste(first,second)
+  last_name <- paste(third,last)
+  first_name <- gsub(" ", "",first_name)
+  last_name <- gsub(" ", "",last_name)
+  generated_name <- paste(first_name,last_name)
+  
+  generated_name
+
+}
+
+############## NAME FUNCTION #####################
+##################################################
 
 
 #simple
@@ -67,10 +95,9 @@ colnames(dataset) <-  c("strength","intelligence","wisdom", "dexterity", "consti
   
 character_model <- readRDS("./character_class_model_lda.rds")
 character_prediction <- predict(character_model, dataset) 
-cat("the machine thinks you should be", a_or_an(as.character(character_prediction)),"\n")  
+cat("the machine thinks you should be", a_or_an(as.character(character_prediction)),"named",name_maker(),"\n")  
 
 }
-
 
 
 
@@ -104,13 +131,14 @@ sheet <- cbind(attributes, values)
 
 
 #plot(sheet[,2], ylim=c(0,18), main='player attributes', col=values, legend = rownames(attributes), xlab = "attribute names")
-barplot(values, ylim=c(0,18),  main='player attributes', axisnames = TRUE,  names.arg=attributes, cex.names=0.8, col = )
+barplot(values, ylim=c(0,18),  main='player attributes', axisnames = TRUE,  names.arg=attributes, cex.names=0.8)
 
 #recommender_system_simple(values)
 #recommender_system_switch(values)
 recommender_system_engine(values)
 
 sheet
+
 
 ```
 
